@@ -2,7 +2,10 @@ package sp.phone.forumoperation;
 import java.io.UnsupportedEncodingException;
 import java.lang.StringBuffer;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
+import sp.phone.utils.PhoneConfiguration;
 import sp.phone.utils.StringUtil;
 
 
@@ -73,18 +76,43 @@ public class ThreadPostAction {
 		public String getAction_() {
 			return action_;
 		}
-		
-		
+		public static String Md5(String plainText ) {
+			StringBuffer buf = null;
+			try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(plainText.getBytes());
+			byte b[] = md.digest();
+			int i;
+			buf = new StringBuffer("");
+			for (int offset = 0; offset < b.length; offset++) {
+			i = b[offset];
+			if(i<0) i+= 256;
+			if(i<16)
+			buf.append("0");
+			buf.append(Integer.toHexString(i));
+			}
+			// Log.e("555","result: " + buf.toString());//32位的加密
+			//Log.e("555","result: " + buf.toString().substring(8,24));//16位的加密
+
+			} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+			return buf.toString().substring(8,24);
+		}
 		public void setMention_(String mention_) {
 			this.mention_ = mention_;
 		}
 		public String toString()
 		{
+			long microtime = System.currentTimeMillis();
+			String uid = PhoneConfiguration.getInstance().uid;
+			String ngaClientChecksum = Md5(uid+"100"+String.valueOf(microtime))+String.valueOf(microtime);
 			StringBuffer sb = new StringBuffer();
 			sb.append("step=");sb.append(step_);
 			sb.append("&pid="); sb.append(pid_);
 			sb.append("&action=");sb.append(action_);
-			
+			sb.append("&__ngaClientChecksum=");sb.append(ngaClientChecksum);//客户端验证用
 			if(!action_.equals("modify")){
 				sb.append("&fid="); sb.append(fid_);
 			}else{

@@ -511,23 +511,35 @@ public class ArticleListAdapter extends BaseAdapter implements
 					}else{
 						deviceinfo="发送自Life Style苹果客户端 机型及系统:"+from_client.substring(2);
 					}
-				}else if(clientappcode.equals("101")){
-					if(from_client.length()==4){
-						deviceinfo="发送自Life Style苹果客户端 机型及系统:未知";
-					}else{
-						deviceinfo="发送自Life Style苹果客户端 机型及系统:"+from_client.substring(4);
-					}
-				}else if(clientappcode.equals("103")){
-					if(from_client.length()==4){
-						deviceinfo="发送自WP候总客户端 机型及系统:未知";
-					}else{
-						deviceinfo="发送自WP候总客户端 机型及系统:"+from_client.substring(4);
-					}
 				}else if(clientappcode.equals("8")){
 					if(from_client.length()==2){
 						deviceinfo="发送自178版NGA客户端 机型及系统:未知";
 					}else{
 						deviceinfo="发送自178版NGA客户端 机型及系统:"+from_client.substring(2);
+					}
+				}else if(clientappcode.equals("100")){
+					if(from_client.length()==4){
+						deviceinfo="发送自未知安卓客户端 机型及系统:未知";
+					}else{
+						deviceinfo="发送自未知安卓客户端 机型及系统:"+from_client.substring(4);
+					}
+				}else if(clientappcode.equals("101")){
+					if(from_client.length()==4){
+						deviceinfo="发送自未知苹果客户端 机型及系统:未知";
+					}else{
+						deviceinfo="发送自未知苹果客户端 机型及系统:"+from_client.substring(4);
+					}
+				}else if(clientappcode.equals("102")){
+					if(from_client.length()==4){
+						deviceinfo="发送自未知黑莓客户端 机型及系统:未知";
+					}else{
+						deviceinfo="发送自未知黑莓客户端 机型及系统:"+from_client.substring(4);
+					}
+				}else if(clientappcode.equals("103")){
+					if(from_client.length()==4){
+						deviceinfo="发送自Windows Phone客户端 机型及系统:未知";
+					}else{
+						deviceinfo="发送自Windows Phone客户端 机型及系统:"+from_client.substring(4);
 					}
 				}else{
 					if(from_client.length()==(from_client.indexOf(" ")+1)){
@@ -723,7 +735,9 @@ public class ArticleListAdapter extends BaseAdapter implements
 				holder.clientBtn.setImageResource(R.drawable.ios);//IOS
 			}else if(clientappcode.equals("103")){
 				holder.clientBtn.setImageResource(R.drawable.wp);//候总
-			}else if(!clientappcode.equals("8")){
+			}else if(clientappcode.equals("102")){
+				holder.clientBtn.setImageResource(R.drawable.unkonwn);//黑莓
+			}else if(!clientappcode.equals("8") && !clientappcode.equals("100")){
 				holder.clientBtn.setImageResource(R.drawable.unkonwn);//未知
 			}
 			holder.clientBtn.setVisibility(View.VISIBLE);
