@@ -10,7 +10,6 @@ public class Article {
 	private String url;//
 //	private int isTopic;//
 	private User user;//
-	private String from_client;
 
 //	public int getId() {
 //		return id;
@@ -44,14 +43,6 @@ public class Article {
 		this.floor = floor;
 	}
 
-	public String getFrom_Client() {
-		return from_client;
-	}
-
-	public void setFrom_Client(String from_client) {
-		this.from_client=from_client;
-	}
-	
 	public String getLastTime() {
 		return lastTime;
 	}

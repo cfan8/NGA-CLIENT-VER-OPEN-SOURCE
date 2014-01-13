@@ -232,8 +232,6 @@ public class PostActivity extends SwipeBackAppCompatActivity
 		}else{
 			this.setNavigation();
 		}
-		
-		
 	}
 	
 	@TargetApi(11)
@@ -810,11 +808,7 @@ public class PostActivity extends SwipeBackAppCompatActivity
 
 	@Override
 	protected void onResume() {
-		if(action.equals("new")){
-			titleText.requestFocus();
-		}else{
-			bodyText.requestFocus();
-		}
+		bodyText.requestFocus();
 		if(uploadTask != null){
 			FileUploadTask temp = uploadTask;
 			uploadTask = null;

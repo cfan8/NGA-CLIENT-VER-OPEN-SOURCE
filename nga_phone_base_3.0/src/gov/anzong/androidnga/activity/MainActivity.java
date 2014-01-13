@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
 import sp.phone.adapter.BoardPagerAdapter;
 import sp.phone.bean.Board;
 import sp.phone.bean.BoardCategory;
@@ -32,6 +34,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
@@ -44,15 +47,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import android.support.v7.app.ActionBarActivity;
 
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BaseListSample
 	implements PerferenceConstant,OnItemClickListener,PageCategoryOwnner{
 	static final String TAG = MainActivity.class.getSimpleName();
 	ActivityUtil activityUtil =ActivityUtil.getInstance();
@@ -61,7 +64,7 @@ public class MainActivity extends ActionBarActivity
 	View view;
 	AppUpdateCheckTask task = null;
 	OnItemClickListener onItemClickListenerlistener = new EnterToplistLintener();
-
+	int ifRecentExist=0;//ifRecentExist，menu item click right
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -73,12 +76,131 @@ public class MainActivity extends ActionBarActivity
 		initDate();
 		initView();
 
+		if(boardInfo.getCategoryName(0).equals("最近访问")){
+			setLocItem(3,"最近访问");
+			if(boardInfo.getCategoryCount()>12){
+				if(boardInfo.getCategoryName(12).equals("用户自定义")){
+				setLocItem(16,"用户自定义");
+				}
+			}
+		}
+		else{
+			if(boardInfo.getCategoryCount()==12){
+				setLocItem(15,"用户自定义");
+			}
+		}
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+		
+		mMenuDrawer.setOnInterceptMoveEventListener(new MenuDrawer.OnInterceptMoveEventListener() {
+            @Override
+            public boolean isViewDraggable(View v, int dx, int x, int y) {
+                return v instanceof SeekBar;
+            }
+        });
 		//task = new AppUpdateCheckTask(this);
 		//task.execute("");
 
 	}
 
+	//3 menu function
+	@Override
+    protected void onMenuItemClicked(int position, Item item) {
+        //do click
+		//i=0
+		if(!boardInfo.getCategoryName(0).equals("最近访问")){
+			ifRecentExist=1;
+		}
+		if(item.mTitle.equals("登陆账号")){
+			jumpToLogin();
+		}
+		else if(item.mTitle.equals("yoooo")){
+			jumpToNearby();
+		}
+		else if(item.mTitle.equals("最近访问")){
+			pager.setCurrentItem(0-ifRecentExist);
+		}
+		else if(item.mTitle.equals("综合讨论")){
+			pager.setCurrentItem(1-ifRecentExist);
+		}
+		else if(item.mTitle.equals("大漩涡系列")){
+			pager.setCurrentItem(2-ifRecentExist);
+		}
+		else if(item.mTitle.equals("职业讨论区")){
+			pager.setCurrentItem(3-ifRecentExist);
+		}
+		else if(item.mTitle.equals("冒险心得")){
+			pager.setCurrentItem(4-ifRecentExist);
+		}
+		else if(item.mTitle.equals("麦迪文之塔")){
+			pager.setCurrentItem(5-ifRecentExist);
+		}
+		else if(item.mTitle.equals("系统软硬件讨论")){
+			pager.setCurrentItem(6-ifRecentExist);
+		}
+		else if(item.mTitle.equals("其他游戏")){
+			pager.setCurrentItem(7-ifRecentExist);
+		}
+		else if(item.mTitle.equals("暗黑破坏神")){
+			pager.setCurrentItem(8-ifRecentExist);
+		}
+		else if(item.mTitle.equals("炉石传说")){
+			pager.setCurrentItem(9-ifRecentExist);
+		}
+		else if(item.mTitle.equals("英雄联盟")){
+			pager.setCurrentItem(10-ifRecentExist);
+		}
+		else if(item.mTitle.equals("个人版面")){
+			pager.setCurrentItem(11-ifRecentExist);
+		}
+		else if(item.mTitle.equals("用户自定义")){
+			pager.setCurrentItem(12-ifRecentExist);
+		}
+		else if(item.mTitle.equals("程序设置")){
+			jumpToSetting();
+		}
+		else if(item.mTitle.equals("添加面板")){
+			//addFid
+			//abandon FC！！！！！！！！！！
+			add_fid_dialog();
+		}
+		else if(item.mTitle.equals("关于")){
+			//about
+		}
+		
+        mMenuDrawer.closeMenu();
+    }
 
+    @Override
+    protected int getDragMode() {
+        return MenuDrawer.MENU_DRAG_CONTENT;
+    }
+
+    @Override
+    protected Position getDrawerPosition() {
+        return Position.START;
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //outState.putString(STATE_CONTENT_TEXT, mContentText);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        final int drawerState = mMenuDrawer.getDrawerState();
+        if (drawerState == MenuDrawer.STATE_OPEN || drawerState == MenuDrawer.STATE_OPENING) {
+            mMenuDrawer.closeMenu();
+            return;
+        }
+
+        super.onBackPressed();
+    }
+    
+    
 	private void loadConfig(Intent intent) {
 		//initUserInfo(intent);
 		this.boardInfo = this.loadDefaultBoard();
@@ -119,7 +241,7 @@ public class MainActivity extends ActionBarActivity
 		}
 		*/
 		//this.getSupportActionBar().setDisplayOptions(flags);
-		ReflectionUtil.actionBar_setDisplayOption(this, flags);
+		ReflectionUtil.actionBar_setmDisplayOption(this, flags);
 		
 
 		return super.onCreateOptionsMenu(menu);
@@ -270,6 +392,12 @@ public class MainActivity extends ActionBarActivity
 								}//for i
 						  if(!FidAllreadyExist){
 							  addToaddFid(name,fid);
+							  pager.getAdapter().notifyDataSetChanged();
+							  //add menu item
+							  if(boardInfo.getCategoryCount()==12){
+									setLocItem(15,"用户自定义");
+								}
+							  else{setLocItem(16,"用户自定义");}
 							  Toast.makeText(MainActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
 						 try  
 		    		        {  
@@ -384,8 +512,13 @@ public class MainActivity extends ActionBarActivity
 		view = LayoutInflater.from(this).inflate(R.layout.viewpager_main, null);
 		view.setBackgroundResource(
 			ThemeManager.getInstance().getBackgroundColor());
-		setContentView(view);
+		mMenuDrawer.setContentView(view);
 
+		//left drawer
+		mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_BEZEL);
+        mMenuDrawer.setSlideDrawable(R.drawable.ic_drawer);
+        mMenuDrawer.setDrawerIndicatorEnabled(true);
+		
 		pager = (ViewPager) findViewById(R.id.pager);
 
 
@@ -593,6 +726,10 @@ public class MainActivity extends ActionBarActivity
 							List<Board> boardList = new ArrayList<Board>();
 							boardList.add(b1);
 							saveRecent(boardList);
+							//add recent menu item
+							setLocItem(3,"最近访问");
+							//set menu click right
+							ifRecentExist=0;
 							boardInfo = loadDefaultBoard();
 							return;
 						}else{

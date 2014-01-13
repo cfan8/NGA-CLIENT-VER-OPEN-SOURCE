@@ -1,5 +1,8 @@
 package sp.phone.utils;
 
+import gov.anzong.androidnga.activity.ArticleListActivity;
+import gov.anzong.androidnga.activity.MainActivity;
+
 import java.lang.reflect.Method;
 
 import android.app.Activity;
@@ -29,6 +32,29 @@ public class ReflectionUtil {
 			ret = false;
 		}*/
 		activity.getSupportActionBar().setDisplayOptions(flags);
+		return ret;
+		
+	}
+	
+	public static boolean actionBar_setmDisplayOption(MainActivity mainActivity,
+			int flags){
+		boolean ret = true;
+		 /*Method setDisplayMethod;
+		 Method getActionBarMethod;
+		try {//
+			getActionBarMethod = activity.getClass().
+			 	getMethod("getActionBar");
+			Object actionBar = getActionBarMethod.invoke(activity);
+			
+			//setDisplayMethod= Class.forName("android.app.ActionBar")
+			//		.getMethod("setDisplayOptions", int.class);
+			setDisplayMethod = actionBar.getClass().getMethod("setDisplayOptions", int.class);
+			 setDisplayMethod.invoke(actionBar, flags);
+		} catch (Exception e){
+			Log.i(activity.getClass().getSimpleName(),"fail to set actionBar");
+			ret = false;
+		}*/
+		mainActivity.getActionBar().setDisplayOptions(flags);
 		return ret;
 		
 	}
