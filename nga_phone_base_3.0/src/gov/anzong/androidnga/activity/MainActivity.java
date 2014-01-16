@@ -400,11 +400,7 @@ public class MainActivity extends BaseListSample
 						  if(!FidAllreadyExist){
 							  addToaddFid(name,fid);
 							  pager.getAdapter().notifyDataSetChanged();
-							  //add menu item
-							  if(boardInfo.getCategoryCount()==12){
-									setLocItem(15,"用户自定义");
-								}
-							  else{setLocItem(16,"用户自定义");}
+							  
 							  Toast.makeText(MainActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
 						 try  
 		    		        {  
@@ -437,6 +433,17 @@ public class MainActivity extends BaseListSample
 		
 		return alert.show();
 	}
+	/*private boolean isBoardExist(String boardname){
+		 for(int i =0; i < boardInfo.getCategoryCount(); i++){
+		 System.out.println(boardname+boardInfo.getCategoryName(i));
+		 if(boardname.equals(boardInfo.getCategoryName(i))){
+			 System.out.println(i);
+		 return true;
+		 }
+		 }
+		return false;
+		}*/
+	
 	private void addToaddFid(String Name,String Fid) {
 		boolean addFidAlreadExist = false;
 		BoardCategory addFid = null;
@@ -456,6 +463,12 @@ public class MainActivity extends BaseListSample
 			boardList.add(b);
 			saveaddFid(boardList);
 			boardInfo = loadDefaultBoard();
+			//add menu item
+				  if(boardInfo.getCategoryCount()==12){
+				setLocItem(15,"用户自定义");
+				}
+				  else{setLocItem(16,"用户自定义");}
+				  
 			return;
 		}else{// 有了
 			Board b =new Board(i, Fid, Name, R.drawable.pdefault);
@@ -463,6 +476,7 @@ public class MainActivity extends BaseListSample
 			}
 		addFid = boardInfo.getCategory(i);
 		this.saveaddFid(addFid.getBoardList());
+		  
 		return;
 		
 	}
