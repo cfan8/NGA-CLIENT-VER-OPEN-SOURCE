@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -196,20 +197,28 @@ public class MainActivity extends BaseListSample
             mMenuDrawer.closeMenu();
             return;
         }
-
         super.onBackPressed();
     }
     
+	@Override
+	 public boolean onKeyDown(int keyCode, KeyEvent event) {
+	  
+	  if (keyCode == KeyEvent.KEYCODE_MENU) { 
+		  final int drawerState = mMenuDrawer.getDrawerState();
+	        if (drawerState == MenuDrawer.STATE_OPEN || drawerState == MenuDrawer.STATE_OPENING) {
+	            mMenuDrawer.closeMenu();
+	        }
+	        if (drawerState == MenuDrawer.STATE_CLOSED || drawerState == MenuDrawer.STATE_CLOSING) {
+	            mMenuDrawer.openMenu();
+	        }
+	  }   
+	  return true; // 最后，一定要做完以后返回 true，或者在弹出菜单后返回true，其他键返回super，让其他键默认
+	 }
     
 	private void loadConfig(Intent intent) {
 		//initUserInfo(intent);
 		this.boardInfo = this.loadDefaultBoard();
-
-
-
 	}
-
-
 	@Override
 	protected void onStop() {
 		if(task != null){
@@ -219,33 +228,31 @@ public class MainActivity extends BaseListSample
 		}
 		super.onStop();
 	}
-
-
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
-	@Override
+/*	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_menu, menu);
 
 		final int flags = ThemeManager.ACTION_BAR_FLAG;
-		/*
+		
 		int actionNum = ThemeManager.ACTION_IF_ROOM;//SHOW_AS_ACTION_IF_ROOM
 		int i = 0;
 		for(i = 0;i< menu.size();i++){
 			ReflectionUtil.setShowAsAction(
 					menu.getItem(i), actionNum);
 		}
-		*/
+		
 		//this.getSupportActionBar().setDisplayOptions(flags);
 		ReflectionUtil.actionBar_setmDisplayOption(this, flags);
 		
 
 		return super.onCreateOptionsMenu(menu);
-	}
+	}*/
 
 
 	/* (non-Javadoc)
@@ -479,7 +486,7 @@ public class MainActivity extends BaseListSample
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.mainmenu_login:
+/*		case R.id.mainmenu_login:
 			this.jumpToLogin();
 			break;
 		case R.id.mainmenu_setting:
@@ -492,14 +499,19 @@ public class MainActivity extends BaseListSample
 			break;
 		case R.id.add_fid:
 			add_fid_dialog();
-			break;
+			break;*/
 		default:
 			/*Intent MyIntent = new Intent(Intent.ACTION_MAIN);
 			MyIntent.addCategory(Intent.CATEGORY_HOME);
 			startActivity(MyIntent);*/
-			finish();
+			final int drawerState = mMenuDrawer.getDrawerState();
+	        if (drawerState == MenuDrawer.STATE_OPEN || drawerState == MenuDrawer.STATE_OPENING) {
+	            mMenuDrawer.closeMenu();
+	        }
+	        if (drawerState == MenuDrawer.STATE_CLOSED || drawerState == MenuDrawer.STATE_CLOSING) {
+	            mMenuDrawer.openMenu();
+	        }
 			break;
-
 		}
 		return true;
 	}

@@ -394,7 +394,7 @@ public class MyApp extends Application implements PerferenceConstant {
 				share.getBoolean(REFRESH_AFTER_POST,false));
 		config.setRefreshAfterPost(false);
 		
-		config.showAnimation = share.getBoolean(SHOW_ANIMATION, true);
+		config.showAnimation = share.getBoolean(SHOW_ANIMATION, false);
 		config.useViewCache = share.getBoolean(USE_VIEW_CACHE, true);
 		config.showSignature = share.getBoolean(SHOW_SIGNATURE, false);
 		config.uploadLocation = share.getBoolean(UPLOAD_LOCATION, false);
