@@ -721,6 +721,7 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 		 * @deprecated This will be removed before v1.0. Override
          * {@link #onViewCreated(android.app.Activity, android.view.View)} instead.
 		 */
+		@Deprecated
 		public void onViewCreated(View headerView) {}
 
 		/**

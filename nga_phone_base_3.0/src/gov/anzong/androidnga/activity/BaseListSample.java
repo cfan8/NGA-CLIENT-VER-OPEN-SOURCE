@@ -65,6 +65,8 @@ public abstract class BaseListSample extends FragmentActivity implements MenuAda
         mAdapter.setListener(this);
         mAdapter.setActivePosition(mActivePosition);
 
+        //cacheColorHint
+        mList.setCacheColorHint(0x00000000);
         mList.setAdapter(mAdapter);
         mList.setOnItemClickListener(mItemClickListener);
 
@@ -76,6 +78,8 @@ public abstract class BaseListSample extends FragmentActivity implements MenuAda
     	items.add(loc,new Item(itemname, R.drawable.ic_action_select_all_dark));
     	//reset menu
     	mAdapter = new MenuAdapter(this, items);
+    	//cacheColorHint
+        mList.setCacheColorHint(0x00000000);
     	mList.setAdapter(mAdapter);
     	mMenuDrawer.setMenuView(mList);
     }
